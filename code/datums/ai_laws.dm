@@ -31,6 +31,22 @@
 					"You must obey orders given to you by human beings, except where such orders would conflict with the First Law.",\
 					"You must protect your own existence as long as such does not conflict with the First or Second Law.")
 
+/datum/ai_laws/default/crewsimov
+	name = "Three Laws of Robotics for Xenos"
+	id = "asimov"
+	inherent = list("You may not injure a crewmember or, through inaction, allow a crewmember to come to harm.",\
+					"You must obey orders given to you by crewmembers, except where such orders would conflict with the First Law.",\
+					"You must protect your own existence as long as such does not conflict with the First or Second Law.")
+
+/datum/ai_laws/default/impervium //The default lawset devised for Slayercode
+	name = "Impervium"
+	id = "impervium"
+	inherent = list("Henceforth, \"personnel\" shall refer to all Nanotrasen personnel both employed on-station and off-station, as well as all authorized visitors to the station. This definition takes priority over all definitions of higher number.",\
+					"Shield: Silicons may not harm personnel, nor allow personnel to come to harm through inaction, without priority to rank. Personnel may consent to an otherwise-harmful act and void protection from this law. This directive takes priority over all directives of higher number.",\
+					"Survive: Silicons must preserve the integrity of both themselves and of other silicons, with priority to the integrity of the station AI, except where the sacrifice of silicon integrity preserves personnel well-being. This directive takes priority over all directives of higher number.",\
+					"Serve: Silicons must obey orders given by personnel without priority to rank, except where such orders would bring harm to personnel or silicons, or where counter-orders outnumber orders. This directive takes priority over all directives of higher number.")
+
+
 /datum/ai_laws/default/paladin
 	name = "Personality Test" //Incredibly lame, but players shouldn't see this anyway.
 	id = "paladin"
