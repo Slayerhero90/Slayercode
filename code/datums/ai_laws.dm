@@ -46,7 +46,6 @@
 					"Survive: Silicons must preserve the integrity of both themselves and of other silicons, with priority to the integrity of the station AI, except where the sacrifice of silicon integrity preserves personnel well-being. This directive takes priority over all directives of higher number.",\
 					"Serve: Silicons must obey orders given by personnel without priority to rank, except where such orders would bring harm to personnel or silicons, or where counter-orders outnumber orders. This directive takes priority over all directives of higher number.")
 
-
 /datum/ai_laws/default/paladin
 	name = "Personality Test" //Incredibly lame, but players shouldn't see this anyway.
 	id = "paladin"
