@@ -7,10 +7,5 @@
 # NOTE: if the rank-name cannot be found in admin_ranks.txt, they will not be adminned! ~Carn #
 # NOTE: syntax was changed to allow hyphenation of ranknames, since spaces are stripped.      #
 ###############################################################################################
-Optimumtact = Host
-NewSta = Game Master
-Expletives = Game Master
-kingofkosmos = Game Master
-MrStonedOne = Lazy Master
-microscopics = Game Master
-Gun Hog = Game Slayerhero90 = HostSultryMaiden = Game Master
+Slayerhero90 = Host
+SultryMaiden = Game Master
