@@ -190,6 +190,18 @@
 	glass_name = "glass of holy water"
 	glass_desc = "A glass of holy water."
 
+/datum/reagent/water/holywater/on_mob_add(mob/M)
+	..()
+	if(isliving(M))
+		var/mob/living/L = M
+		L.add_trait(TRAIT_HOLY, id)
+
+/datum/reagent/water/holywater/on_mob_delete(mob/M)
+	if(isliving(M))
+		var/mob/living/L = M
+		L.remove_trait(TRAIT_HOLY, id)
+	..()
+
 /datum/reagent/water/holywater/reaction_mob(mob/living/M, method=TOUCH, reac_volume)
 	if(is_servant_of_ratvar(M))
 		to_chat(M, "<span class='userdanger'>A darkness begins to spread its unholy tendrils through your mind, purging the Justiciar's influence!</span>")
@@ -619,7 +631,7 @@
 	id = "gluttonytoxin"
 	description = "An advanced corruptive toxin produced by something terrible."
 	color = "#5EFF3B" //RGB: 94, 255, 59
-	can_synth = 0
+	can_synth = FALSE
 	taste_description = "decay"
 
 /datum/reagent/gluttonytoxin/reaction_mob(mob/M, method=TOUCH, reac_volume)
@@ -1080,7 +1092,7 @@
 	id = "nanomachines"
 	description = "Microscopic construction robots."
 	color = "#535E66" // rgb: 83, 94, 102
-	can_synth = 0
+	can_synth = FALSE
 	taste_description = "sludge"
 
 /datum/reagent/nanites/reaction_mob(mob/M, method=TOUCH, reac_volume, show_message = 1, touch_protection = 0)
@@ -1092,7 +1104,7 @@
 	id = "xenomicrobes"
 	description = "Microbes with an entirely alien cellular structure."
 	color = "#535E66" // rgb: 83, 94, 102
-	can_synth = 0
+	can_synth = FALSE
 	taste_description = "sludge"
 
 /datum/reagent/xenomicrobes/reaction_mob(mob/M, method=TOUCH, reac_volume, show_message = 1, touch_protection = 0)
@@ -1104,6 +1116,7 @@
 	id = "fungalspores"
 	description = "Active fungal spores."
 	color = "#92D17D" // rgb: 146, 209, 125
+	can_synth = FALSE
 	taste_description = "slime"
 
 /datum/reagent/fungalspores/reaction_mob(mob/M, method=TOUCH, reac_volume, show_message = 1, touch_protection = 0)
@@ -1657,10 +1670,10 @@
 		of the host body."
 	color = "#123524" // RGB (18, 53, 36)
 	metabolization_rate = INFINITY
-	can_synth = 0
+	can_synth = FALSE
 	taste_description = "brains"
 
-/datum/reagent/romerol/on_mob_life(mob/living/carbon/human/H)
+/datum/reagent/romerol/reaction_mob(mob/living/carbon/human/H, method=TOUCH, reac_volume)
 	// Silently add the zombie infection organ to be activated upon death
 	if(!H.getorganslot(ORGAN_SLOT_ZOMBIE))
 		var/obj/item/organ/zombie_infection/ZI = new()
@@ -1777,7 +1790,7 @@
 	id = "synthpax"
 	description = "A colorless liquid that suppresses violence on the subjects. Cheaper to synthetize, but wears out faster than normal Pax."
 	metabolization_rate = 1.5 * REAGENTS_METABOLISM
-  
+
 /datum/reagent/bz_metabolites
 	name = "BZ metabolites"
 	id = "bz_metabolites"

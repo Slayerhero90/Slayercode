@@ -165,7 +165,7 @@
 
 	message_admins("The roundtype will be converted. If you have other plans for the station or feel the station is too messed up to inhabit <A HREF='?_src_=holder;[HrefToken()];toggle_midround_antag=[REF(usr)]'>stop the creation of antags</A> or <A HREF='?_src_=holder;[HrefToken()];end_round=[REF(usr)]'>end the round now</A>.")
 	log_game("Roundtype converted to [replacementmode.name]")
-	
+
 	. = 1
 
 	sleep(rand(600,1800))
@@ -256,11 +256,15 @@
 	var/list/report_weights = config.mode_false_report_weight.Copy()
 	report_weights[config_tag] = 0 //Prevent the current mode from being falsely selected.
 	var/list/reports = list()
-	for(var/i in 1 to rand(3,5)) //Between three and five wrong entries on the list.
+	var/Count = 0 //To compensate for missing correct report
+	if(prob(65)) // 65% chance the actual mode will appear on the list
+		reports += config.mode_reports[config_tag]
+		Count++
+	for(var/i in Count to rand(3,5)) //Between three and five wrong entries on the list.
 		var/false_report_type = pickweightAllowZero(report_weights)
 		report_weights[false_report_type] = 0 //Make it so the same false report won't be selected twice
 		reports += config.mode_reports[false_report_type]
-	reports += config.mode_reports[config_tag]
+
 	reports = shuffle(reports) //Randomize the order, so the real one is at a random position.
 
 	for(var/report in reports)
@@ -297,7 +301,7 @@
 	for(var/mob/dead/new_player/player in players)
 		if(player.client && player.ready == PLAYER_READY_TO_PLAY)
 			if(role in player.client.prefs.be_special)
-				if(!jobban_isbanned(player, "Syndicate") && !jobban_isbanned(player, role)) //Nodrak/Carn: Antag Job-bans
+				if(!jobban_isbanned(player, ROLE_SYNDICATE) && !jobban_isbanned(player, role)) //Nodrak/Carn: Antag Job-bans
 					if(age_check(player.client)) //Must be older than the minimum age
 						candidates += player.mind				// Get a list of all the people who want to be the antagonist for this round
 
@@ -311,7 +315,7 @@
 		for(var/mob/dead/new_player/player in players)
 			if(player.client && player.ready == PLAYER_READY_TO_PLAY)
 				if(!(role in player.client.prefs.be_special)) // We don't have enough people who want to be antagonist, make a separate list of people who don't want to be one
-					if(!jobban_isbanned(player, "Syndicate") && !jobban_isbanned(player, role)) //Nodrak/Carn: Antag Job-bans
+					if(!jobban_isbanned(player, ROLE_SYNDICATE) && !jobban_isbanned(player, role)) //Nodrak/Carn: Antag Job-bans
 						drafted += player.mind
 
 	if(restricted_jobs)
@@ -366,9 +370,12 @@
 //Reports player logouts//
 //////////////////////////
 /proc/display_roundstart_logout_report()
-	var/msg = "<span class='boldnotice'>Roundstart logout report\n\n</span>"
+	var/list/msg = list("<span class='boldnotice'>Roundstart logout report\n\n</span>")
 	for(var/i in GLOB.mob_living_list)
 		var/mob/living/L = i
+		var/mob/living/carbon/C = L
+		if (istype(C) && !C.last_mind)
+			continue  // never had a client
 
 		if(L.ckey && !GLOB.directory[L.ckey])
 			msg += "<b>[L.name]</b> ([L.ckey]), the [L.job] (<font color='#ffcc00'><b>Disconnected</b></font>)\n"
@@ -390,7 +397,7 @@
 					continue //Dead
 
 			continue //Happy connected client
-		for(var/mob/dead/observer/D in GLOB.mob_list)
+		for(var/mob/dead/observer/D in GLOB.dead_mob_list)
 			if(D.mind && D.mind.current == L)
 				if(L.stat == DEAD)
 					if(L.suiciding)	//Suicider
@@ -408,7 +415,7 @@
 
 
 	for (var/C in GLOB.admins)
-		to_chat(C, msg)
+		to_chat(C, msg.Join())
 
 //If the configuration option is set to require players to be logged as old enough to play certain jobs, then this proc checks that they are, otherwise it just returns 1
 /datum/game_mode/proc/age_check(client/C)
